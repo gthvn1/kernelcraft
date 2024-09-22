@@ -18,7 +18,17 @@ and the world of technology becomes our playground.
 
 ---
 
-# Steps
+# Status
+
+- [x] booting a custom kernel with a custom root filesystem and get a prompt on serial
+- [x] build a simple kernel module and see the log in *dmesg*
+- [ ] play with a virtio block device
+    - [ ] understand how virtqueue are used on both part (*qemu:device* and *linux:driver*)
+    - [ ] add a new simple virtio device in qemu
+    - [ ] add a new kernel module to interact with the new device
+- [ ] extend the device... something else?
+
+# The expedition...
 
 ## Build the system
 
@@ -191,8 +201,3 @@ but not uptodate. Check our repo to see SHA1.
     - See `steps`
 - **qemu** is configured to only build x86_64.
     - See `steps`
-
-## Status
-
-- Currently we are able to boot and get a prompt on serial
-- Next step, add a kernel module.
