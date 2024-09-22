@@ -10,7 +10,7 @@ Join us in this adventure, where knowledge is gained through hands-on exploratio
 
 ---
 
-## Steps
+## Build
 
 ### build a linux kernel
 ```bash
@@ -30,6 +30,11 @@ make -j 8
 ### build a rootfs using buildroot
 
 **TODO**
+
+## Boot the system
+
+If you followed the steps in the `build` section you should be able to boot
+the kernel using `boot.ml` (or `boot.sh`).
 
 ### build a hello world kernel module
 
