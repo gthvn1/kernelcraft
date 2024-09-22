@@ -4,3 +4,6 @@
 [submodule "linux"]
 	path = linux
 	url = https://github.com/gthvn1/linux
+[submodule "buildroot"]
+	path = buildroot
+	url = https://github.com/gthvn1/buildroot
