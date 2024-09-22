@@ -18,9 +18,11 @@ and the world of technology becomes our playground.
 
 ---
 
-## Build
+# Steps
 
-### build a linux kernel
+## Build the system
+
+### build the linux kernel
 ```bash
 mkdir linux/build
 cp linux-config linux/build/.config
@@ -37,17 +39,40 @@ make -j 8
 ```
 
 ### build a rootfs using buildroot
-**TODO**
+- We use BusyBox as init system
+- Buildroot already puts everything in `output/`
+```bash
+cp buildroot-config buildroot/.config
+cd buildroot
+make oldconfig
+make
+```
 
 ## Boot the system
 
-If you followed the steps in the `build` section you should be able to boot
+If you followed the steps in the [build section](https://github.com/gthvn1/kernelcraft#build) you should be able to boot
 the kernel using `boot.ml` (or `boot.sh`).
 
-### build a hello world kernel module
+```bash
+./qemu/build/qemu-system-x86_64 \
+    -enable-kvm \
+    -cpu host \
+    -kernel linux/build/arch/x86_64/boot/bzImage \
+    -append "console=ttyS0  root=/dev/vda devtmpfs.mount=1" \
+    -drive format=raw,file=buildroot/output/images/rootfs.ext2,if=virtio \
+    -m 1024M
+```
+
+## Build a hello world kernel module
 **TODO**
 
-## Notes
+## Create a new block device in qemu
+**TODO**
+
+## Create the linux driver for the new qemu device
+**TODO**
+
+# Notes
 
 - We provide an OCaml script just for fun but you can use `boot.sh`
     - to format ocaml file `ocamlformat -i <file.ml>`
