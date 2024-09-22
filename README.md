@@ -70,11 +70,116 @@ the kernel using `boot.ml` (or `boot.sh`).
 indenpendently. We did that because we are compiling the kernel many times so it is easier and it is not that
 different to built it in the kernel or as a module.
 
-## Create a new block device in qemu
-**TODO**
 
-## Create the linux driver for the new qemu device
-**TODO**
+## Implementing a module using Virtio is to create a simple Virtio-based device
+
+*This is a work in progress, steps are defined but are under investigation*.
+
+*... Reflexions ...*
+
+A good first step for implementing a module using Virtio is to create a simple Virtio-based
+device, such as a Virtio block device, and then extend it gradually.
+
+Here's an easy path forward:
+
+1. **Understand the Virtio Framework**
+The Linux kernel has an extensive **Virtio framework** for handling Virtio devices, which
+are widely used in virtualized environments like QEMU. Virtio drivers in Linux communicate
+with corresponding Virtio device implementations in QEMU.
+
+Virtio block devices are an excellent entry point because they are simpler than networking
+or GPU devices. These devices interact with QEMU's backend through a shared memory
+mechanism (Virtqueue) to perform I/O operations.
+
+2. **Modify QEMU to Add a Simple Virtio Device**
+
+QEMU provides interfaces for creating custom Virtio devices. We can start by modifying or
+adding a new Virtio device in QEMU.
+
+- **Steps**:
+  - Navigate to the **`hw/virtio/`** directory in QEMU’s source code. This directory contains implementations for Virtio devices.
+  - Copy the existing `virtio-blk.c` file, which implements a block device.
+  - Modify the new file to define a custom device (e.g., `virtio-hello.c`).
+  - Add the device to `hw/virtio/Makefile.objs`.
+  - Register the new device in `hw/virtio/virtio.c` by adding it to the list of supported Virtio devices.
+
+3. **Create a Simple Linux Kernel Module Using Virtio**
+
+On the kernel side, we will write a module that acts as a Virtio driver for our custom Virtio device.
+
+- **Steps**:
+  - In our Linux source tree, navigate to `drivers/virtio`.
+  - Create a new file for our module, for example, `hello_virtio.c`.
+  - Use the `virtio_driver` structure, which is used to register a Virtio driver with the kernel.
+  - Implement our own `probe()` and `remove()` functions to initialize and tear down the device.
+  - Our `probe()` function will be called when a Virtio device that matches our driver is detected.
+  - Communicate with QEMU's backend using the Virtqueue mechanism.
+
+Example of registering a Virtio driver:
+
+```c
+#include <linux/module.h>
+#include <linux/virtio.h>
+
+static int hello_virtio_probe(struct virtio_device *vdev) {
+    printk(KERN_INFO "Hello Virtio device detected!\n");
+    return 0;
+}
+
+static void hello_virtio_remove(struct virtio_device *vdev) {
+    printk(KERN_INFO "Hello Virtio device removed!\n");
+}
+
+static struct virtio_device_id hello_virtio_id_table[] = {
+    { VIRTIO_ID_YOUR_DEVICE, VIRTIO_DEV_ANY_ID },
+    { 0 },
+};
+
+static struct virtio_driver hello_virtio_driver = {
+    .driver.name = KBUILD_MODNAME,
+    .driver.owner = THIS_MODULE,
+    .id_table = hello_virtio_id_table,
+    .probe = hello_virtio_probe,
+    .remove = hello_virtio_remove,
+};
+
+module_virtio_driver(hello_virtio_driver);
+
+MODULE_DEVICE_TABLE(virtio, hello_virtio_id_table);
+MODULE_AUTHOR("Me");
+MODULE_DESCRIPTION("Simple Virtio Driver");
+MODULE_LICENSE("GPL");
+```
+
+4. **Launch QEMU with Our Custom Device**
+
+To test our Virtio device, we'll need to launch QEMU with support for the device we
+added in step 2. Add the new Virtio device as an option in the QEMU command line when
+starting our virtual machine.
+
+For example, if we created a `virtio-hello` device, we would specify it when launching QEMU:
+
+```bash
+qemu-system-x86_64 -device virtio-hello-pci
+```
+
+5. **Test the Virtio Module in our Kernel**
+Once QEMU is running with our new Virtio device, load the Linux kernel with the `hello_virtio.ko` module:
+
+```bash
+sudo insmod hello_virtio.ko
+```
+
+Check the kernel logs to ensure the device is detected:
+
+```bash
+dmesg | grep Virtio
+```
+
+### Next Steps:
+- **Handle Data I/O**: We can extend this simple Virtio driver to handle data I/O by using Virtqueues to transfer data between the guest (kernel module) and the host (QEMU).
+- **Experiment with Different Virtio Types**: After understanding Virtio block, we can try implementing Virtio-net or other types.
+- **Performance Tuning**: We can optimize Virtio drivers for better performance as we grow familiar with Virtqueue mechanisms.
 
 # Notes
 
