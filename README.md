@@ -17,10 +17,13 @@ Join us in this adventure, where knowledge is gained through hands-on exploratio
 
 ## Notes
 
-We are using the following versions:
-- linux-6.10.6
-- qemu-9.0.3
-- buildroot-2024.02.6
+- We provide an OCaml script just for fun but you can use `boot.sh`
+- We are using the following versions:
+    - linux-6.10.6
+    - qemu-9.0.3
+    - buildroot-2024.02.6
+- **linux** and **buildroot** are using Kconfig so both can be configured using `make menuconfig`
+- **qemu** is configured to only build x86_64.
 
 ## Status
 
