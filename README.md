@@ -201,3 +201,8 @@ but not uptodate. Check our repo to see SHA1.
     - See `steps`
 - **qemu** is configured to only build x86_64.
     - See `steps`
+
+## Virtio links
+
+- [Qemu, VirtIO backend](https://github.com/qemu/qemu/blob/master/docs/devel/virtio-backends.rst)
+- [VirtIO & Vhost](https://insujang.github.io/2021-03-10/virtio-and-vhost-architecture-part-1/)
