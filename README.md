@@ -61,7 +61,7 @@ make
 ## Boot the system
 
 If you followed the steps in the [build section](https://github.com/gthvn1/kernelcraft#build) you should be able to boot
-the kernel using `boot.ml` (or `boot.sh`).
+the kernel using `./scripts/boot.ml` (or `./scripts/boot.sh`).
 
 ```bash
 ./qemu/build/qemu-system-x86_64 \
