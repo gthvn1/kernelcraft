@@ -1,6 +1,6 @@
 # Kernel Craft
 
-<img src="images/kernelcraft.png" alt="KernelCraft Project Illustration" width="300"/>
+<img align="left" src="images/kernelcraft.png" alt="KernelCraft Project Illustration" width="300"/>
 
 KernelCraft is an exciting journey into the hidden world of computers. Just like explorers of the past, we set out to discover the secrets inside the heart of modern systems—the kernel. This project will build a custom Linux kernel, create a root filesystem using Buildroot, and use QEMU to test and experiment with new device drivers.
 
