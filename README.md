@@ -12,17 +12,23 @@ Join us in this adventure, where knowledge is gained through hands-on exploratio
 
 ## Steps
 - build a linux kernel
-- build a rootfs using buildroot
-- build qemu
+```bash
+mkdir linux/build
+cp linux-config linux/build/.config
+cd linux/
+make O=build oldconfig
+make O=build -j 8
+```
+- build a rootfs using buildroot: `TODO`
+- build qemu: `TODO`
 
 ## Notes
 
 - We provide an OCaml script just for fun but you can use `boot.sh`
-- We are using the following versions:
-    - linux-6.10.6
-    - qemu-9.0.3
-    - buildroot-2024.02.6
+- We are using a fork of linux, qemu and buildroot. We are on the master branch
+but not uptodate. Check our repo to see SHA1.
 - **linux** and **buildroot** are using Kconfig so both can be configured using `make menuconfig`
+    - See `steps`
 - **qemu** is configured to only build x86_64.
 
 ## Status
