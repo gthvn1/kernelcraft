@@ -64,7 +64,11 @@ the kernel using `boot.ml` (or `boot.sh`).
 ```
 
 ## Build a hello world kernel module
-**TODO**
+- Taken from [The Linux Kernel Module Programming Guide](https://tldp.org/LDP/lkmpg/2.6/html/x279.html)
+- We created a `hello.c` and build it into `driver/block`
+- We don't build it as a module because currently our rootfs is built with buildroot and our kernel is built
+indenpendently. We did that because we are compiling the kernel many times so it is easier and it is not that
+different to built it in the kernel or as a module.
 
 ## Create a new block device in qemu
 **TODO**
