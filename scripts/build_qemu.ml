@@ -9,9 +9,9 @@ open Unix
 let build_qemu () =
   let commands =
     [
-      {| mkdir -p qemu-build |};
-      {| cd qemu-build && ../qemu/configure --target-list=x86_64-softmmu |};
-      {| cd qemu-build && make -j$(nproc) |};
+      {| mkdir -p qemu/build |};
+      {| cd qemu/build && ../configure --target-list=x86_64-softmmu |};
+      {| cd qemu/build && make -j 8 |};
     ]
   in
   List.iter

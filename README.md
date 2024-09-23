@@ -202,7 +202,40 @@ but not uptodate. Check our repo to see SHA1.
 - **qemu** is configured to only build x86_64.
     - See `steps`
 
+## Virtio overview
+
+- Our first understanding of Virtio layers are:
+```
++-----------------------------+
+|      VirtIO Device (blk,    |
+|      net, etc.)             |  <- Device only sees VirtIO interface
++-----------------------------+
+            |
+            v
++-----------------------------+
+|   VirtIO Transport Layer    |  <- Handles communication details
+|   (abstracts bus specifics) |     depending on bus type
++-----------------------------+
+            |
+            v
++------------------------------+
+|   VirtIO Bus Level           |  <- PCI or MMIO-specific methods
+|  (PCI or MMIO implementation)|     (there is also Virtio CCW transport)
++------------------------------+
+            |
+            v
++-----------------------------+
+|   Physical Bus (PCI, MMIO)  |  <- Hardware-level transport (e.g., MMIO)
++-----------------------------+
+```
+
+- The transport layer is
+    - `hw/virtio/virtio.c`: Contains common VirtIO transport APIs.
+    - `hw/virtio/virtio-pci.c`: Contains PCI-specific implementations of the transport APIs.
+    - `hw/virtio/virtio-mmio.c`: Contains MMIO-specific implementations of the transport APIs.
+
 ## Virtio links
 
+- [Virtio Specifications](http://docs.oasis-open.org/virtio/virtio/v1.0/cs04/virtio-v1.0-cs04.html#x1-90002)
 - [Qemu, VirtIO backend](https://github.com/qemu/qemu/blob/master/docs/devel/virtio-backends.rst)
 - [VirtIO & Vhost](https://insujang.github.io/2021-03-10/virtio-and-vhost-architecture-part-1/)
